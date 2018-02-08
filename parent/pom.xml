@@ -1,1 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.company.my</groupId>
+    <artifactId>common-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Common Maven Parent POM</name>
+
+    <modules>
+        <module>cpp-parent</module>
+        <module>java-parent</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- maven-enforcer-plugin -->
+        <enforcer.jdk.versions>[1.8.0,)</enforcer.jdk.versions>
+        <enforcer.maven.versions>[3.0,)</enforcer.maven.versions>
+
+        <!-- version-maven-plugin -->
+        <pushRemote>false</pushRemote>
+        <allowSnapshots>false</allowSnapshots>
+        <version.properties.to.update />
+    </properties>
+
+    <prerequisites>
+        <maven>3.0.0</maven>
+    </prerequisites>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>1.7</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>ant-contrib</groupId>
+                            <artifactId>ant-contrib</artifactId>
+                            <version>1.0b3</version>
+                            <exclusions>
+                                <exclusion>
+                                    <groupId>ant</groupId>
+                                    <artifactId>ant</artifactId>
+                                </exclusion>
+                            </exclusions>
+                        </dependency>
+                        <dependency>
+                            <groupId>com.oopsconsultancy</groupId>
+                            <artifactId>xmltask</artifactId>
+                            <version>1.16</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>2.4.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>2.6.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.2</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>2.9</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.7</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>1.3.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>3.6</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>2.8</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.7</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5.3</version>
+                    <configuration>
+                        <!-- just do deploy as site mojo has errors in some projects -->
+                        <goals>deploy</goals>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.4</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.4</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <phase>package</phase>
+                            <goals>
+                                <!-- Use jar as maven-release-plugin also performs jar and keep them same to not incurr double uploads -->
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>com.amashchenko.maven.plugin</groupId>
+                    <artifactId>gitflow-maven-plugin</artifactId>
+                    <version>1.8.0</version>
+                    <configuration>
+                        <gitFlowConfig>
+                            <developmentBranch>master</developmentBranch>
+                            <fetchRemote>false</fetchRemote>
+                            <versionTagPrefix>${project.artifactId}-</versionTagPrefix>
+                        </gitFlowConfig>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>external.atlassian.jgitflow</groupId>
+                    <artifactId>jgitflow-maven-plugin</artifactId>
+                    <version>1.0-m5.1</version>
+                    <configuration>
+                        <useReleaseProfile>false</useReleaseProfile>
+                        <flowInitContext>
+                            <!-- used to avoid tag conflicts for repositories with multiple independently released projects -->
+                            <versionTagPrefix>${project.artifactId}-</versionTagPrefix>
+                        </flowInitContext>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>1.9.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>1.4.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.gmaven</groupId>
+                    <artifactId>groovy-maven-plugin</artifactId>
+                    <version>2.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>versions-maven-plugin</artifactId>
+                    <version>2.1</version>
+                    <configuration>
+                        <generateBackupPoms>false</generateBackupPoms>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-environment</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireJavaVersion>
+                                    <version>${enforcer.jdk.versions}</version>
+                                </requireJavaVersion>
+                                <requireMavenVersion>
+                                    <version>${enforcer.maven.versions}</version>
+                                </requireMavenVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>release-finish</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.amashchenko.maven.plugin</groupId>
+                        <artifactId>gitflow-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>release-finish</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>release-finish</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>release-finish</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <taskdef resource="net/sf/antcontrib/antlib.xml" />
+                                        <exec executable="git">
+                                            <arg line="push --set-upstream origin master" />
+                                        </exec>
+                                        <exec executable="git">
+                                            <arg line="push origin" />
+                                        </exec>
+                                        <exec executable="git">
+                                            <arg line="push origin ${project.artifactId}-${project.version}" />
+                                        </exec>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile> 
+
+        <!-- Report Related Profiles -->
+        <profile>
+            <id>full-reports</id>
+            <activation>
+                <property>
+                    <name>full-reports</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-site-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>stage</id>
+                                <phase>site</phase>
+                                <goals>
+                                    <!-- use stage to make aggregated report have correct links under Modules -->
+                                    <goal>stage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- set version of parent and children in case there was release failure -->
+        <profile>
+            <id>set-version</id>
+            <properties>
+                <newVersion />
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>set-version</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <taskdef resource="net/sf/antcontrib/antlib.xml" />
+                                        <echo message="*** Setting version to ${newVersion}" />
+                                        <exec executable="mvn">
+                                            <arg line="-f ${project.pomFile} versions:set -DnewVersion=${newVersion}" />
+                                        </exec>
+                                        <exec executable="git">
+                                            <arg line="commit -a -m 'MISC: Setting pom versions to ${newVersion}'" />
+                                        </exec>
+                                        <if>
+                                            <equals arg1="${pushRemote}" arg2="true" />
+                                            <then>
+                                                <exec executable="git">
+                                                    <arg line="push origin develop" />
+                                                </exec>
+                                            </then>
+                                        </if>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- update parent pom version to latest -->
+        <profile>
+            <id>update-parent-version</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>update-parent-version</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <taskdef resource="net/sf/antcontrib/antlib.xml" />
+                                        <echo message="*** Updating parent version with allowSnapshots=${allowSnapshots}" />
+                                        <exec executable="mvn">
+                                            <!-- Just update parent for root pom (-N) -->
+                                            <arg line="-f ${project.pomFile} versions:update-parent -N -U -B -DgenerateBackupPoms=false -DallowSnapshots=${allowSnapshots}" />
+                                        </exec>
+                                        <exec executable="git">
+                                            <arg line="commit -a -m 'MISC: Updating parent pom version with allowSnapshots=${allowSnapshots}'" />
+                                        </exec>
+                                        <if>
+                                            <equals arg1="${pushRemote}" arg2="true" />
+                                            <then>
+                                                <exec executable="git">
+                                                    <arg line="push origin develop" />
+                                                </exec>
+                                            </then>
+                                        </if>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- update dependent version to latest -->
+        <!-- assumes that all pom and it's children are named pom.xml -->
+        <profile>
+            <id>update-dependency-version</id>
+            <properties>
+                <version.properties.base>[0,)</version.properties.base>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>update-dependency-version</id>
+                                <phase>initialize</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <taskdef resource="net/sf/antcontrib/antlib.xml" />
+                                        <taskdef classname="com.oopsconsultancy.xmltask.ant.XmlTask" name="xmltask" />
+                                        <for list="${version.properties.to.update}" param="property.name" trim="true">
+                                            <sequential>
+                                                <echo message="*** Updating @{property.name} version to ${version.properties.base}" />
+                                                <xmltask dest="${project.pomFile}" omitHeader="true" source="${project.pomFile}">
+                                                    <replace path="/*[local-name()='project']/*[local-name()='properties']//*[local-name()='@{property.name}']/text()" withText="${version.properties.base}" />
+                                                </xmltask>
+                                            </sequential>
+                                        </for>
+                                        <echo message="*** Updating dependencies version with allowSnapshots=${allowSnapshots}" />
+                                        <propertyregex property="_temp" input="${version.properties.to.update}" regexp="[^a-zA-Z0-9\-\.\_\,]" replace="" global="true" defaultValue="${version.properties.to.update}" />
+                                        <exec executable="mvn">
+                                            <arg line="-f ${project.pomFile} versions:update-properties -N -U -B -DallowSnapshots=${allowSnapshots} -DincludeProperties=${_temp}" />
+                                        </exec>
+                                        <exec executable="git">
+                                            <arg line="commit -a -m 'MISC: Updating dependencies version with allowSnapshots=${allowSnapshots}'" />
+                                        </exec>
+                                        <if>
+                                            <equals arg1="${pushRemote}" arg2="true" />
+                                            <then>
+                                                <exec executable="git">
+                                                    <arg line="push origin develop" />
+                                                </exec>
+                                            </then>
+                                        </if>
+                                    </target>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+    <distributionManagement>
+        <!-- expects settings.xml->settings->servers->server to hold credentials -->
+        <repository>
+            <id>releases</id>
+            <url>https://my.company.com/repository/maven-company-releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>https://my.company.com/repository/maven-company-snapshots</url>
+        </snapshotRepository>
+        <!-- needed in order for site:stage to work -->
+        <site>
+            <id>default</id>
+            <url>file://localhost</url>
+        </site>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>company-central</id>
+            <url>https://my.company.com/repository/maven-company-central</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>company-central</id>
+            <url>https://my.company.com/repository/maven-company-central</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+</project>
