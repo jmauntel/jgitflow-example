@@ -8,11 +8,6 @@
     <packaging>pom</packaging>
     <name>Common Maven Parent POM</name>
 
-    <modules>
-        <module>cpp-parent</module>
-        <module>java-parent</module>
-    </modules>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
